@@ -1,0 +1,188 @@
+-- for testing and gaming purp. computercraft lua script
+-- To clear any area configured by width length height
+-- Not user-friendly version, weak fuel amount control.
+-- lack of inventory control
+-- Bugs included
+-- working on making this more useful
+-- requiers AddApi file in the /mApi/AddApi folder
+-- author: mifark. http://twitter.com/mifark
+ 
+ os.loadAPI("/mApi/AddApi")
+ 
+local tArgs = { ... }
+ 
+if #tArgs ~= 3 then
+        print( "/\ length <- width \/ height" )
+        print( "Usage: programname <width> <length> <height>" )
+        return
+end
+ 
+ 
+local width = tonumber( tArgs[1] )
+local length = tonumber( tArgs[2] )
+local height = tonumber( tArgs[3] )
+ 
+if width<=0 or length<=0 or height<=0 then
+    print("Parameters must be greater than zero")
+    return
+end
+ 
+local xPos,yPos,zPos = 1,1,1
+local dir = true
+local sxPos, syPos, szPos = 1,1,1
+ 
+ 
+local function tryClear(aceil,afloor)
+        if aceil then
+                turtle.digUp()
+        end
+        if afloor then
+                turtle.digDown()
+        end
+end
+ 
+local function tryMoveForward()
+        AddApi.tryMove(turtle.forward,turtle.detect,turtle.dig,turtle.attack)
+end
+ 
+local function switchLevel()
+    AddApi.tryMove(turtle.down,turtle.detectDown,turtle.digDown,turtle.attackDown)
+end
+ 
+local function tryMoveUp()
+    AddApi.tryMove(turtle.up,turtle.detectUp,turtle.digUp,turtle.attackUp)
+end
+ 
+local function tryLine()
+if yPos==1 then
+    while yPos < width do
+        tryMoveForward()
+        yPos=yPos+1
+    end
+elseif yPos>1 then
+    while yPos > 1 do
+        tryMoveForward()
+        yPos=yPos-1    
+    end
+end
+   
+end
+ 
+local function switchLine(bigYfunc,smallYfunc)
+   if yPos==1 then
+        smallYfunc()
+        tryMoveForward()
+        smallYfunc()
+        dir=true
+   elseif yPos>1 then
+        bigYfunc()
+        tryMoveForward()
+        bigYfunc()
+        dir=false
+   end
+ 
+end
+ 
+local function tryLevel()
+        if xPos<length then
+                while xPos < length do
+                        tryLine()
+                        switchLine(turtle.turnRight,turtle.turnLeft)
+                        xPos=xPos+1
+                end
+    elseif xPos>1 then
+                while xPos>1 do
+                        tryLine()
+                        switchLine(turtle.turnLeft,turtle.turnRight)
+                        xPos=xPos-1
+                end
+        end
+    tryLine()
+   
+end
+ 
+ 
+ 
+local function goHomeLevel()
+        szPos=zPos
+    if zPos>1 then
+        for i=zPos-1,1,-1 do
+            tryMoveUp()
+        end
+    end
+    zPos=1
+end
+ 
+local function goBegin()
+        sxPos=xPos
+        syPos=yPos
+    if yPos>1 then
+        AddApi.turn180()
+        for i=yPos-1,1,-1 do
+            tryMoveForward()    
+        end  
+    end
+                AddApi.turn180()
+               
+    if xPos>1 then
+        turtle.turnLeft()
+        for i=xPos-1,1,-1 do
+                tryMoveForward()
+        end
+        turtle.turnRight()
+    end
+    xPos=1
+    yPos=1
+end
+ 
+local function goCoordinates()
+        turtle.turnRight()      
+        if yPos<syPos then
+            turtle.turnLeft()
+                        while yPos<syPos do
+                                tryMoveForward()
+                                yPos=yPos+1
+                        end
+            turtle.turnRight()
+        end
+        if xPos<sxPos then
+            while xPos<sxPos do
+                                tryMoveForward()
+                                xPos=xPos+1
+            end
+             
+        end
+        if zPos<szPos then
+                        while zPos<szPos do
+                                switchLevel()
+                                zPos=zPos+1
+                        end
+        end
+        if dir then
+            turtle.turnLeft()
+        else
+            turtle.turnRight()
+        end
+       
+end
+ 
+local function Levels()
+    print("Begin digging")
+    print("Level " .. tostring(zPos) .. " of " .. tostring(height))
+    --while zPos <= height do
+    for i=1,height-1,1 do
+        tryLevel()
+        zPos=zPos+1
+        AddApi.turn180()
+        switchLevel()
+        print("Level " .. tostring(zPos) .. " of " .. tostring(height))
+    end
+    tryLevel()
+    goBegin()
+    goHomeLevel()
+    print("Program ended")
+end
+ 
+Levels()
+ 
+os.unloadAPI("/mApi/AddApi"

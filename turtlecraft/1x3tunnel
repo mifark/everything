@@ -1,0 +1,161 @@
+--- for testing and gaming purp. computercraft lua script
+-- 1 wide 3 height tunnel
+-- returns to the point of origin, no fuel control, no inventory control
+-- can place torches
+-- can place cobble pathways
+-- bugs included
+-- usage: place the turtle in front of middle block
+-- requiers AddApi file in the /mApi/AddApi folder
+-- author: mifark. http://twitter.com/mifark
+ 
+os.loadAPI("/mApi/AddApi")
+ 
+ 
+local tArgs = { ... }
+ 
+if #tArgs ~=1 then
+    print("usage: programname <tunnel length>")
+end
+ 
+local length = tonumber( tArgs[1] )
+local xPos = 1
+local torch = true
+local cobble = true
+local noise = false
+local up,down,forward = "up","down","forward"
+ 
+local function move(side)
+    if side==up then
+        AddApi.tryMove(turtle.up,turtle.detectUp,turtle.digUp,turtle.attackUp)
+    elseif side==down then
+        AddApi.tryMove(turtle.down,turtle.detectDown,turtle.digDown,turtle.attackDown)
+    elseif side==forward then
+        AddApi.tryMove(turtle.forward,turtle.detect,turtle.dig,turtle.attack)
+    end
+end
+ 
+local function checknoise()
+    for i=12,14,1 do
+        if turtle.getItemCount(i)>0 then
+            noise = true
+            return true
+        end
+    end
+    return false
+   
+end
+ 
+local function ores(detectfunc,comparefunc, digfunc)
+    dig = true
+    turtle.select(12)
+    for i=12,14,1 do
+        turtle.select(i)
+        if turtle.getItemCount(i)>0 then
+            if comparefunc() then
+               dig=false
+                end
+        end
+    end
+    if dig then
+        digfunc()
+    end
+end
+ 
+local function detect(detectfunc,comparefunc,digfunc)
+    if noise then
+        if detectfunc() then
+            ores(detectfunc,comparefunc,digfunc)
+        end
+    end
+end
+ 
+local function checktorch()
+    if turtle.getItemCount(16)>0 then
+         return true
+    end
+    torch = false
+    return false
+end
+ 
+local function placetorch()
+    if torch then
+        if xPos%5==0 then
+            turtle.select(16)
+            turtle.placeDown()
+            turtle.select(1)
+        end
+    end
+end
+ 
+local function checkcobble()
+    if turtle.getItemCount(15)>0 then
+        return true
+    end
+    cobble = false
+    return false
+end
+ 
+local function placecobble()
+    if cobble then
+        if not turtle.detectDown() then
+            turtle.select(15)
+            turtle.placeDown()
+            turtle.select(1)
+        end
+    end
+end
+ 
+local function sides()
+    if noise then
+        turtle.turnLeft()
+        detect(turtle.detect,turtle.compare,turtle.dig)
+        AddApi.turn180()
+        detect(turtle.detect,turtle.compare,turtle.dig)
+        turtle.turnLeft()
+    end
+end
+ 
+local function line()
+        print("line "..tostring(xPos).." of "..tostring(length))
+    move(forward)
+    sides()
+    move(up)
+    detect(turtle.detectUp,turtle.compareUp,turtle.digUp)
+    sides()
+    move(down)
+    move(down)
+    sides()
+    detect(turtle.detectDown,turtle.compareDown,turtle.digDown)
+    placecobble()
+    move(up)
+    placetorch()
+end
+ 
+local function returnhome()
+    move(up)
+    AddApi.turn180()
+    for i=length,1,-1 do
+        move(forward)
+    end
+    AddApi.turn180()
+    move(down)
+end
+ 
+local function work()
+    checknoise()
+        print("digging "..tostring(length).." length tunnel")
+    while xPos<=length do
+        checktorch()
+        checkcobble()
+        line()
+        xPos=xPos+1
+    end
+        print("returing home")
+    returnhome()
+    print("program ended")
+end
+ 
+work()
+ 
+ 
+os.unloadAPI("/mApi/AddApi")
