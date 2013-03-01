@@ -76,7 +76,10 @@ void OScene::generateMap()
    {
        for(int j=0;j<10;j++)
        {
-           this->point[i][j] = qrand()%4;
+           if(qrand()%4==0)
+            this->point[i][j] = 0;
+           else
+            point[i][j] = 1;
        }
    }
    for(int i=0;i<10;i++)
@@ -86,4 +89,19 @@ void OScene::generateMap()
        point[9][i] = 0;
        point[i][9] = 0;
    }
+}
+
+int OScene::workAround(int nx, int ny)
+{
+    int d[3]={-1,0,1};
+    int count;
+    for(int i=0;i<3;i++)
+    {
+        for(int j=0;j<3;j+=2)
+        {
+        count = count + point[d[i]][d[j]]==1 ? 1:0;
+        count = count + point[d[j]][d[i]]==1 ? 1:0;
+        }
+    }
+
 }

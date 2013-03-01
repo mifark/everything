@@ -27,6 +27,7 @@ private:
 //    QList<QPointF> points;
     int point[10][10];
     void generateMap();
+    int workAround(int nx, int ny);
 
 
 
