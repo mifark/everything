@@ -5,10 +5,10 @@ mainform::mainform(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::mainform)
 {
-    owidget = new OScene();
+    owidget = new OScene(0,0);
 //    ui->verticalLayout->addWidget(owidget);
-    ui->gridLayout->addWidget(owidget);
     ui->setupUi(this);
+    ui->gridLayout->addWidget(owidget);
 }
 
 mainform::~mainform()

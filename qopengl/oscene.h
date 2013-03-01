@@ -1,16 +1,16 @@
 #ifndef OSCENE_H
 #define OSCENE_H
 
-//#include <QtOpenGL/QGLWidget>
-//#include <QtOpenGL/qgl.h>
-//#include <QtOpenGL/QtOpenGL>
+#include <QGLWidget>
 #include <QtOpenGL>
+
 
 class OScene : public QGLWidget
 {
     Q_OBJECT
 public:
-    explicit OScene();
+    explicit OScene(QWidget *parent=0,QGLWidget *sharewidget=0);
+    ~OScene();
 
 
 protected:
@@ -25,6 +25,8 @@ protected:
 private:
 //    QPointF mpnt;
 //    QList<QPointF> points;
+    int point[10][10];
+    void generateMap();
 
 
 
