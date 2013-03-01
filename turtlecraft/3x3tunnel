@@ -1,0 +1,119 @@
+--- for testing and gaming purp. computercraft lua script
+-- 3 wide 3 height tunnel
+-- returns to the point of origin, no fuel control, no inventory control
+-- can place torches
+-- can place cobble pathways
+-- bugs included
+-- usage: place the turtle in front of the middle block
+-- requiers AddApi file in the /mApi/AddApi folder
+-- author: mifark. http://twitter.com/mifark
+ 
+ 
+os.loadAPI("/mApi/AddApi")
+ 
+local tArgs = { ... }
+ 
+if #tArgs ~= 1 then
+    print("usage: programname <tunnel length>")
+end
+ 
+local length = tonumber( tArgs[1] )
+local xPos = 1
+local torch = true
+local cobble = true
+ 
+local function moveup()
+    AddApi.tryMove(turtle.up,turtle.detectUp,turtle.digUp,turtle.attackUp)
+end
+ 
+local function movedown()
+    AddApi.tryMove(turtle.down,turtle.detectDown,turtle.digDown,turtle.attackDown)
+end
+ 
+local function moveforward()
+    AddApi.tryMove(turtle.forward,turtle.detect,turtle.dig,turtle.attack)
+end
+ 
+local function checktorch()
+    if turtle.getItemCount(16)>0 then
+        return true
+    end
+    torch = false
+    return false
+end
+ 
+local function placetorch()
+    if torch then
+        if xPos%5==0 then
+            turtle.select(16)
+            turtle.placeDown()
+            turtle.select(1)
+        end
+    end
+end
+ 
+local function checkcobble()
+    if turtle.getItemCount(15)>0 then
+        return true
+    end
+    cobble = false
+    return false
+end
+ 
+local function placecobble()
+    if cobble then
+        if not turtle.detectDown() then
+            turtle.select(15)
+            turtle.placeDown()
+            turtle.select(1)
+        end
+    end
+end
+ 
+local function sides()
+    turtle.turnLeft()
+    AddApi.tryDig(turtle.detect,turtle.dig,turtle.attack)
+    AddApi.turn180()
+    AddApi.tryDig(turtle.detect,turtle.dig,turtle.attack)
+    turtle.turnLeft()
+end
+ 
+local function line()
+    print("line "..tostring(xPos).." of "..tostring(length))
+    moveforward()
+    sides()
+    moveup()
+    sides()
+    movedown()
+    movedown()
+    sides()
+    placecobble()
+    moveup()
+    placetorch()
+end
+ 
+local function returnhome()
+    moveup()
+    AddApi.turn180()
+    for i=length,1,-1 do
+        moveforward()
+    end
+    AddApi.turn180()
+    movedown()
+end
+ 
+local function work()
+    print("digging "..tostring(length).." length tunnel")
+    while xPos<=length do
+        checktorch()
+        checkcobble()
+        line()
+        xPos=xPos+1
+    end
+    print("returing home")
+    returnhome()
+    print("program ended")
+end
+ 
+work()
+os.unloadAPI("/mApi/AddApi")

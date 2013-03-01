@@ -1,0 +1,195 @@
+-- clearArea V2
+-- modified for better fuel consumption
+-- for testing and gaming purp. computercraft lua script
+-- To clear any area configured by width length height
+-- Not user-friendly version, weak fuel amount control.
+-- lack of inventory control
+-- Bugs included
+-- still WIP
+-- requiers AddApi file in the /mApi/AddApi folder
+-- author: mifark. http://twitter.com/mifark
+ 
+ 
+os.loadAPI("/mApi/AddApi")
+ 
+local tArgs = { ... }
+ 
+if #tArgs > 4 or #tArgs < 3 then
+        print( "//\ length -> width \// height" )
+        print( "Usage: programname <width> <length> <height>" )
+        print( "Usage 2: programname <width> <length> <height> I")
+        print( "I - enable inventory control " )
+        return
+end    
+ 
+local bInv
+local width = tonumber( tArgs[1] )
+local length = tonumber( tArgs[2] )
+local height = tonumber( tArgs[3] )
+ 
+if #tArgs == 4 and tArgs[4]=="I" then
+    bInv = true
+else
+    bInv = false
+end
+ 
+if width<=0 or length<=0 or height<=0 then
+    print("Parameters must be greater than zero")
+    return
+end
+ 
+local xPos,yPos,zPos = 1,1,1
+local dir = true
+local sxPos, syPos, szPos = 1,1,1  
+local up,down,forward = "up","down","forward"
+local top,bottom = false,false
+ 
+local function move(side)
+    if side==up then
+        AddApi.tryMove(turtle.up,turtle.detectUp,turtle.digUp,turtle.attackUp)
+    elseif side==down then
+        AddApi.tryMove(turtle.down,turtle.detectDown,turtle.digDown,turtle.attackDown)
+    elseif side==forward then
+        AddApi.tryMove(turtle.forward,turtle.detect,turtle.dig,turtle.attack)
+    end
+end
+ 
+local function clearLayers(mtop,mbottom)
+    if mtop then
+        AddApi.tryDig(turtle.detectUp,turtle.digUp,turtle.attackUp)
+    end
+    if mbottom then
+        AddApi.tryDig(turtle.detectDown,turtle.digDown,turtle.attackDown)
+    end
+end
+ 
+local function checkLayers()
+   
+end
+ 
+local function tryLine()
+    if yPos==1 then
+        while yPos < width do
+            move(forward)
+            clearLayers(top,bottom)
+            yPos=yPos+1
+        end
+    elseif yPos>1 then
+        while yPos > 1 do
+            move(forward)
+            clearLayers(top,bottom)
+            yPos=yPos-1    
+        end
+    end
+end
+ 
+local function switchLine(bigYfunc,smallYfunc)
+   if yPos==1 then
+        smallYfunc()
+        move(forward)
+        clearLayers(top,bottom)
+        smallYfunc()
+        dir=true
+   elseif yPos>1 then
+        bigYfunc()
+        move(forward)
+        clearLayers(top,bottom)
+        bigYfunc()
+        dir=false
+   end
+end
+ 
+local function tryLevel()
+        if xPos<length then
+                while xPos < length do
+                        tryLine()
+                        switchLine(turtle.turnRight,turtle.turnLeft)
+                        xPos=xPos+1
+                end
+    elseif xPos>1 then
+                while xPos>1 do
+                        tryLine()
+                        switchLine(turtle.turnLeft,turtle.turnRight)
+                        xPos=xPos-1
+                end
+        end
+    tryLine()
+   
+end
+ 
+local function goHomeLevel()
+        szPos=zPos
+    if zPos>1 then
+        for i=zPos-1,1,-1 do
+            move(up)
+        end
+    end
+    zPos=1
+end
+ 
+local function goBegin()
+        sxPos=xPos
+        syPos=yPos
+    if yPos>1 then
+        AddApi.turn180()
+        for i=yPos-1,1,-1 do
+            move(forward)  
+        end  
+    end
+    AddApi.turn180()
+               
+    if xPos>1 then
+        turtle.turnLeft()
+        for i=xPos-1,1,-1 do
+                move(forward)
+        end
+        turtle.turnRight()
+    end
+    xPos=1
+    yPos=1
+end
+ 
+local function goOrigin()
+    goBegin()
+    goHomeLevel()
+end
+ 
+local function Levels()
+    print("Begin digging")
+    while zPos<height do
+        tzPos=height-zPos+1
+        if tzPos%3==0 then
+            move(down)    
+            top,bottom = true,true
+            clearLayers(top,bottom)
+            tryLevel()
+            move(down)
+            zPos=zPos+3
+        elseif tzPos%3==2 then
+            move(down)
+            top,bottom = true,false
+            clearLayers(top,bottom)
+            tryLevel()
+            zPos=zPos+2
+        else
+            top,bottom = false,false
+            clearLayers(top,bottom)
+            tryLevel()
+            zPos=zPos+1
+        end
+        print(zPos)
+        if zPos<height then
+            move(down)
+        end
+        AddApi.turn180()
+    end
+    zPos=zPos-1
+    AddApi.turn180()
+    goOrigin()
+  --  goCoordinates()
+    print("Program ended")
+end
+ 
+Levels()
+ 
+os.unloadAPI("/mApi/AddApi")

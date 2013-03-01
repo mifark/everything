@@ -1,0 +1,54 @@
+-- Personal api for ComputerCraft Minecraft mod
+-- several frequently used functions
+-- script file should be placed as /mApi/AddApi to use with my other scripts
+ 
+function feedwait()
+        while(turtle.getFuelLevel()<1) do
+                sleep(5)
+                for i=1,16,1 do
+                        turtle.select(i)
+                        turtle.refuel(1)
+                end
+                turtle.select(1)
+        end
+end
+ 
+function tryDig(detectionfunc,diggingfunc,attackingfunc)
+    if detectionfunc() then        
+        while detectionfunc() do
+            if diggingfunc() then              
+                sleep(0.4)
+            end
+        end
+        return true
+    elseif attackingfunc() then
+        return true
+    end
+    return false
+ 
+end
+ 
+ 
+function tryMove(movingfunc,detectionfunc,diggingfunc,attackingfunc)
+    while not movingfunc() do
+        if not tryDig(detectionfunc,diggingfunc,attackingfunc) then
+                        print("problem with fuel?")
+            feedwait()
+        end
+    end
+    return true
+end
+ 
+function unloadEverything(dropfunc)
+    for i=1,16,1 do
+        turtle.select(i)
+        dropfunc()
+    end
+    turtle.select(1)
+end
+ 
+ 
+function turn180()
+        turtle.turnLeft()
+        turtle.turnLeft()
+end
