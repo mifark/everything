@@ -6,9 +6,9 @@ mainform::mainform(QWidget *parent) :
     ui(new Ui::mainform)
 {
     owidget = new OScene(0,0);
-//    ui->verticalLayout->addWidget(owidget);
     ui->setupUi(this);
-    ui->gridLayout->addWidget(owidget);
+//    ui->gridLayout->addWidget(owidget);
+    ui->horizontalLayout->addWidget(owidget);
 }
 
 mainform::~mainform()

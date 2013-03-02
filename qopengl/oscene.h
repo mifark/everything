@@ -3,7 +3,12 @@
 
 #include <QGLWidget>
 #include <QtOpenGL>
+#include <QTimer>
 
+const int USIZE = 500;
+const int FSIZE = 15;
+const int ACTIVE = 1;
+const int FREE = 0;
 
 class OScene : public QGLWidget
 {
@@ -23,11 +28,18 @@ protected:
 
 
 private:
+    QTimer timer;
 //    QPointF mpnt;
 //    QList<QPointF> points;
-    int point[10][10];
+    int point[FSIZE][FSIZE];
     void generateMap();
-    int workAround(int nx, int ny);
+    void drawGrid();
+    void drawUniverse();
+    int conflict(int xpos, int ypos);
+
+private slots:
+    void lifeperiod();
+
 
 
 
