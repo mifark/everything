@@ -1,7 +1,7 @@
 #include "oscene.h"
 
 OScene::OScene(QWidget *parent, QGLWidget *sharewidget):
-    QGLWidget(parent,sharewidget)
+    QGLWidget(parent,sharewidget),
 {
     QGLFormat fmt;
     fmt.setDoubleBuffer(true);
@@ -31,8 +31,8 @@ void OScene::resizeGL(int w, int h)
 void OScene::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    drawUniverse();
-    drawGrid();
+//    drawUniverse();
+//    drawGrid();
 
 }
 
