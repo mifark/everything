@@ -1,4 +1,4 @@
--- Personal api for ComputerCraft Minecraft mod
+--- Personal api for ComputerCraft Minecraft mod
 -- several frequently used functions
 -- script file should be placed as /mApi/AddApi to use with my other scripts
  
@@ -17,7 +17,7 @@ function tryDig(detectionfunc,diggingfunc,attackingfunc)
     if detectionfunc() then        
         while detectionfunc() do
             if diggingfunc() then              
-                sleep(0.4)
+                sleep(0.5)
             end
         end
         return true
@@ -32,11 +32,23 @@ end
 function tryMove(movingfunc,detectionfunc,diggingfunc,attackingfunc)
     while not movingfunc() do
         if not tryDig(detectionfunc,diggingfunc,attackingfunc) then
-                        print("problem with fuel?")
+            print("problem with fuel?")
             feedwait()
         end
     end
     return true
+end
+ 
+function tmoveup()
+    tryMove(turtle.up,turtle.detectUp,turtle.digUp,turtle.attackUp)
+end
+ 
+function tmovedown()
+    tryMove(turtle.down,turtle.detectDown,turtle.digDown,turtle.attackDown)
+end
+ 
+function tmoveforward()
+    tryMove(turtle.forward,turtle.detect,turtle.dig,turtle.attack)
 end
  
 function unloadEverything(dropfunc)

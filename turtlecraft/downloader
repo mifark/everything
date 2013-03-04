@@ -1,52 +1,64 @@
 -- downloading script for my computercraft scripts
 -- downloads actual script pack, creating and replacing files
 -- creates every script and nesessary libraries in turtle root folder
-
+ 
 local function remove(slocation)
-	if fs.exists(slocation) then
-		fs.delete(slocation)
-	end
-	print("deleted file "..slocation)
+        if fs.exists(slocation) then
+                fs.delete(slocation)
+        end
+        print("deleted file "..slocation)
 end
-
+ 
 local function get(scode,slocation)
-	shell.run("pastebin","get",scode,slocation)
-
+        shell.run("pastebin","get",scode,slocation)
+ 
 end
-
+ 
 local sapidir = "/mApi"
 local sapiloc = "/mApi/AddApi"
 local sapicode = "BeDDsRjL"
-
+ 
 local sclearloc = "/clearArea"
 local sclearcode = "Pf3nfPui"
-
+ 
 local s3x3tunnel = "/3x3tunnel"
 local s3x3code = "s11GpPUp"
-
+ 
 local s1x3tunnel = "/1x3tunnel"
 local s1x3code = "3i7Syj26"
-
+ 
 local sclearloc2 = "/clearArea2"
 local sclearcode2 = "6CKBnbCG"
-
+ 
+local streedir = "/mTree"
+local streeloc = "/mTree/1tree"
+local s1treecode = "bXxPberC"
+ 
+ 
 if fs.isDir(sapidir) then
-	remove(sapiloc)
-	get(sapicode,sapiloc)
+        remove(sapiloc)
 else
-	fs.makeDir(sapidir)
-	get(sapicode,sapiloc)
-
+        fs.makeDir(sapidir)    
 end
-
+get(sapicode,sapiloc)
+ 
+ 
+if fs.isDir(streedir) then
+        remove(streeloc)
+else
+        fs.makeDir(streedir)   
+end
+get(s1treecode,streeloc)
+ 
+ 
 remove(sclearloc)
 get(sclearcode,sclearloc)
-
+ 
 remove(s3x3tunnel)
 get(s3x3code,s3x3tunnel)
-
+ 
 remove(s1x3tunnel)
 get(s1x3code,s1x3tunnel)
-
+ 
 remove(sclearloc2)
 get(sclearcode2,sclearloc2)
