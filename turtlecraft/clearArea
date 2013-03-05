@@ -42,15 +42,15 @@ local function tryClear(aceil,afloor)
 end
  
 local function tryMoveForward()
-        AddApi.tryMove(turtle.forward,turtle.detect,turtle.dig,turtle.attack)
+        AddApi.tryMove(turtle.forward,turtle.detect,turtle.dig,turtle.attack,0)
 end
  
 local function switchLevel()
-    AddApi.tryMove(turtle.down,turtle.detectDown,turtle.digDown,turtle.attackDown)
+    AddApi.tryMove(turtle.down,turtle.detectDown,turtle.digDown,turtle.attackDown,0)
 end
  
 local function tryMoveUp()
-    AddApi.tryMove(turtle.up,turtle.detectUp,turtle.digUp,turtle.attackUp)
+    AddApi.tryMove(turtle.up,turtle.detectUp,turtle.digUp,turtle.attackUp,0)
 end
  
 local function tryLine()

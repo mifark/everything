@@ -2,6 +2,8 @@
 -- several frequently used functions
 -- script file should be placed as /mApi/AddApi to use with my other scripts
  
+local s_wait = 0.5
+
 function feedwait()
         while(turtle.getFuelLevel()<1) do
                 sleep(5)
@@ -13,11 +15,18 @@ function feedwait()
         end
 end
  
-function tryDig(detectionfunc,diggingfunc,attackingfunc)
+function tryDig(detectionfunc,diggingfunc,attackingfunc,wait)
+    local l_wait
+    if wait~=0 then
+		l_wait = wait
+    else
+		l_wait = s_wait
+    end
+    
     if detectionfunc() then        
         while detectionfunc() do
             if diggingfunc() then              
-                sleep(0.5)
+                sleep(l_wait)
             end
         end
         return true
@@ -29,9 +38,9 @@ function tryDig(detectionfunc,diggingfunc,attackingfunc)
 end
  
  
-function tryMove(movingfunc,detectionfunc,diggingfunc,attackingfunc)
+function tryMove(movingfunc,detectionfunc,diggingfunc,attackingfunc,wait)
     while not movingfunc() do
-        if not tryDig(detectionfunc,diggingfunc,attackingfunc) then
+        if not tryDig(detectionfunc,diggingfunc,attackingfunc,wait) then
             print("problem with fuel?")
             feedwait()
         end
@@ -40,15 +49,15 @@ function tryMove(movingfunc,detectionfunc,diggingfunc,attackingfunc)
 end
  
 function tmoveup()
-    tryMove(turtle.up,turtle.detectUp,turtle.digUp,turtle.attackUp)
+    tryMove(turtle.up,turtle.detectUp,turtle.digUp,turtle.attackUp,0)
 end
  
 function tmovedown()
-    tryMove(turtle.down,turtle.detectDown,turtle.digDown,turtle.attackDown)
+    tryMove(turtle.down,turtle.detectDown,turtle.digDown,turtle.attackDown,0)
 end
  
 function tmoveforward()
-    tryMove(turtle.forward,turtle.detect,turtle.dig,turtle.attack)
+    tryMove(turtle.forward,turtle.detect,turtle.dig,turtle.attack,0)
 end
  
 function unloadEverything(dropfunc)
@@ -64,3 +73,10 @@ function turn180()
         turtle.turnLeft()
         turtle.turnLeft()
 end
+
+function goline(lineNumber)
+	for i=1,lineNumber,1 do
+		tryMove(turtle.forward,turtle.detect,turtle.dig,turtle.attack,-1)
+	end
+end
+

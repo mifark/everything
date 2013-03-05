@@ -23,15 +23,15 @@ local torch = true
 local cobble = true
  
 local function moveup()
-    AddApi.tryMove(turtle.up,turtle.detectUp,turtle.digUp,turtle.attackUp)
+    AddApi.tryMove(turtle.up,turtle.detectUp,turtle.digUp,turtle.attackUp,0)
 end
  
 local function movedown()
-    AddApi.tryMove(turtle.down,turtle.detectDown,turtle.digDown,turtle.attackDown)
+    AddApi.tryMove(turtle.down,turtle.detectDown,turtle.digDown,turtle.attackDown,0)
 end
  
 local function moveforward()
-    AddApi.tryMove(turtle.forward,turtle.detect,turtle.dig,turtle.attack)
+    AddApi.tryMove(turtle.forward,turtle.detect,turtle.dig,turtle.attack,0)
 end
  
 local function checktorch()

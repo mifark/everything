@@ -46,11 +46,11 @@ local top,bottom = false,false
  
 local function move(side)
     if side==up then
-        AddApi.tryMove(turtle.up,turtle.detectUp,turtle.digUp,turtle.attackUp)
+        AddApi.tryMove(turtle.up,turtle.detectUp,turtle.digUp,turtle.attackUp,0)
     elseif side==down then
-        AddApi.tryMove(turtle.down,turtle.detectDown,turtle.digDown,turtle.attackDown)
+        AddApi.tryMove(turtle.down,turtle.detectDown,turtle.digDown,turtle.attackDown,0)
     elseif side==forward then
-        AddApi.tryMove(turtle.forward,turtle.detect,turtle.dig,turtle.attack)
+        AddApi.tryMove(turtle.forward,turtle.detect,turtle.dig,turtle.attack,0)
     end
 end
  
