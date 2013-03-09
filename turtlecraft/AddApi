@@ -68,7 +68,6 @@ function unloadEverything(dropfunc)
     turtle.select(1)
 end
  
- 
 function turn180()
         turtle.turnLeft()
         turtle.turnLeft()

@@ -1,7 +1,7 @@
 #include "oscene.h"
 
 OScene::OScene(QWidget *parent, QGLWidget *sharewidget):
-    QGLWidget(parent,sharewidget),
+    QGLWidget(parent,sharewidget)
 {
     QGLFormat fmt;
     fmt.setDoubleBuffer(true);

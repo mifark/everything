@@ -1,0 +1,175 @@
+-- testing for future leavesfarm for ftb
+ 
+os.loadAPI("/mApi/AddApi")
+ 
+local tArgs = { ... }
+local treeW = 1
+ 
+local function changeRow(dir)
+ 
+        if dir>0 then
+                turtle.turnRight()
+                AddApi.tmoveforward()
+                turtle.turnRight()
+        else
+                turtle.turnLeft()
+                AddApi.tmoveforward()
+                turtle.turnLeft()
+        end
+        return -dir
+end
+ 
+ 
+local function rectangle(wd,lg)
+        local dir = 1
+        for l=1,lg,1 do
+                for w=1,wd-1,1 do
+                        AddApi.tmoveforward()
+                end
+                if l~=lg then
+                                        dir = changeRow(dir)
+                                end
+        end
+        --dir = changeRow(-dir)
+        return dir
+end
+ 
+local function movedistance(dist)
+        for i=1,dist-1 do
+                AddApi.tmoveforward()
+        end
+       
+end
+ 
+local function dropitems()
+        for i=1,16,1 do
+                                turtle.select(i)
+                turtle.dropDown()
+        end
+end
+ 
+local function verticalmove(height)
+        for i=height,1,-1 do
+                AddApi.tmovedown()
+        end
+        dropitems()
+        for i=1,height,1 do
+                AddApi.tmoveup()
+        end
+       
+ 
+end
+ 
+local function side()
+        local swidth=1
+        local slength=0
+        local dir = 1
+        while turtle.detect() do
+                AddApi.tmoveforward()
+                swidth=swidth+1
+        end
+        slength = 2*swidth + 1
+        turtle.turnRight()
+        AddApi.tmoveforward()
+        if rectangle(swidth,slength) > 0 then
+                AddApi.turn180()
+                movedistance(swidth)
+        end
+        AddApi.tmoveforward()
+        turtle.turnRight()
+        movedistance(swidth)
+        AddApi.turn180()
+        movedistance(swidth)
+        turtle.turnRight()
+        AddApi.tmoveforward()
+        if rectangle(swidth,slength) > 0 then
+                AddApi.turn180()
+                movedistance(swidth)
+        end
+        AddApi.tmoveforward()
+        turtle.turnRight()
+        movedistance(swidth)
+        AddApi.turn180()
+end
+ 
+local function invcheck()
+        local freeplace = 0
+        for i=1,16,1 do
+                if turtle.getItemCount(i)==0 then
+                        freeplace = freeplace+1
+                end
+        end
+        return freeplace>1
+ 
+end
+ 
+ 
+ 
+local function treeleaves()
+        local height = 1
+        while turtle.detect() do
+                if turtle.detectUp() then
+                        AddApi.tmoveup()
+                        AddApi.turn180()
+                        side()
+                        if not invcheck() then
+                                verticalmove(height)
+                        end
+                        AddApi.turn180()
+                else
+                        AddApi.tmoveup()
+                end
+                height = height + 1
+        end
+        while not turtle.detectDown() do
+                AddApi.tmovedown()
+        end
+        dropitems()
+end
+
+local function treeleaves2()
+		local height = 1
+		while 
+
+end
+
+local function row(r)
+	for i=1,r,1 do
+		AddApi.tmoveforward()
+	end
+end
+ 
+ 
+-- turtle should be faced to tree
+local function side2()
+	local swidth = 1
+	local shwidth = 1
+	AddApi.turn180()
+	while turtle.detect() do
+		AddApi.tmoveforward()
+		shwidth = shwidth + 1
+	end
+	swidth = 2*shwidth + treeW
+	
+	while true do
+	turtle.turnRight()
+	row(shwidth)
+	turtle.turnRight()
+	for i=1,3,1 do
+		row(swidth-1)
+		tutle.turnRight()
+	end
+	row(shwidth + treeW - 1)
+	turtle.turnRight()
+	if not turtle.detect() then
+	turtle.forward()
+	AddApi.turn180()
+	else
+	break
+	end
+	
+	end
+	
+end
+ 
+treeleaves()

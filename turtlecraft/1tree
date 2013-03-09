@@ -1,0 +1,81 @@
+-- test
+-- tree destructor for 2x2 and 1x1 trees
+ 
+ 
+os.loadAPI("/mApi/AddApi")
+ 
+local tArgs = { ... }
+ 
+if #tArgs~=1 then
+		print("usage: programname <programtype>")
+		print("programtype 1 for 1x1 trees, programtype 2 for 2x2 trees")
+        return
+end
+ 
+local count=0
+ 
+local function tree()
+        AddApi.tmoveforward()
+--      AddApi.tryMove(turtle.forward,turtle.detect,turtle.dig,turtle.attack)
+        count = 1
+        while turtle.detectUp() do
+                AddApi.tmoveup()
+                --tryMove(turtle.up,turtle.detectUp,turtle.digUp,turtle.attackUp)
+                count = count + 1
+                
+        end
+        print("logs ="..tostring(count))
+        print("returning down")
+        local ret = count
+        while ret > 1 do
+                --tryMove(turtle.down,turtle.detectDown,turtle.digDown,turtle.attackDown)
+                AddApi.tmovedown()
+                ret = ret - 1
+        end
+      --  turtle.back()
+        print("returned")
+end
+ 
+local function qtree()
+                local height=0
+                local dir = 1
+        AddApi.tmoveforward()
+        count = 1
+        while turtle.detectUp() do
+                AddApi.tmoveforward()
+                AddApi.turn180()
+                dir = 0-dir
+                AddApi.tmoveup()
+                count = count + 2
+                height = height + 1
+        end
+        if dir>0 then
+        AddApi.tmoveforward()
+        turtle.turnRight()
+        AddApi.tmoveforward()
+        turtle.turnRight()
+        else
+        AddApi.tmoveforward()
+        turtle.turnLeft()
+        AddApi.tmoveforward()
+        turtle.turnLeft()
+        end
+        count = count + 1
+        while height > 0 do
+                AddApi.tmoveforward()
+                AddApi.turn180()
+                AddApi.tmovedown()
+                count = count + 2
+                height = height - 1
+        end
+        AddApi.tmoveforward()
+        count = count + 1
+        print("logs ="..tostring(count))
+       
+end
+ 
+if tonumber(tArgs[1])==1 then
+        tree()
+elseif tonumber(tArgs[1])==2 then
+        qtree()
+end
