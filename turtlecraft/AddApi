@@ -79,3 +79,31 @@ function goline(lineNumber)
 	end
 end
 
+local function changeRow(dir)
+ 
+        if dir>0 then
+                turtle.turnRight()
+                tmoveforward()
+                turtle.turnRight()
+        else
+                turtle.turnLeft()
+                tmoveforward()
+                turtle.turnLeft()
+        end
+        return -dir
+end
+
+function rectangle(wd,lg,l=1,w=1)
+        local dir = 1
+        for l=1,lg,1 do
+                for w=1,wd-1,1 do
+                        tmoveforward()
+                end
+                if l~=lg then
+					dir = changeRow(dir)
+				end
+        end
+        --dir = changeRow(-dir)
+        return dir
+end
+
