@@ -15,10 +15,15 @@ class Mform : public QWidget
 public:
     explicit Mform(QWidget *parent = 0);
     ~Mform();
-    
+
+protected:
+    void keyPressEvent(QKeyEvent *);
 private:
     Ui::Mform *ui;
     PeventTest *pe;
+
+public slots:
+    void toRepaint();
 };
 
 #endif // MFORM_H
