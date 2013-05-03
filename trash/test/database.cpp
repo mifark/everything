@@ -6,6 +6,9 @@ database::database(QObject *parent) :
 {
     createDb();
     createTable();
+    setRecord(1,trUtf8("gh"));
+    delRecord(1);
+    deleteTable();
 }
 
 database::~database()
@@ -53,6 +56,8 @@ void database::delRecord(const int id)
     query.bindValue(":lid",id);
     if(!query.exec())
         qDebug() << "delete record err " << query.lastError();
+    else
+        qDebug() << "not-a delete record";
 }
 
 void database::deleteTable()
@@ -60,7 +65,7 @@ void database::deleteTable()
     QSqlQuery query(db);
     query.prepare("drop table objtable;");
     if(!query.exec())
-    {
         qDebug() << "delete table err " << query.lastError();
-    }
+    else
+        qDebug() << "not-a delete table";
 }
