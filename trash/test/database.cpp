@@ -38,11 +38,29 @@ void database::createTable()
 
 void database::setRecord(const int id, const QString &text)
 {
-    QSqlQuery qry(db);
-    QString s;
-    s = QString("")
+    QSqlQuery query(db);
+    query.prepare("insert into objtable (id,object) values (:nid,:nobject);");
+    query.bindValue(":nid",id);
+    query.bindValue(":nobject",text);
+    if(!query.exec())
+        qDebug() << "inserterror " << query.lastError();
+}
+
+void database::delRecord(const int id)
+{
+    QSqlQuery query(db);
+    query.prepare("delete from objtable where id = :lid;");
+    query.bindValue(":lid",id);
+    if(!query.exec())
+        qDebug() << "delete record err " << query.lastError();
 }
 
 void database::deleteTable()
 {
+    QSqlQuery query(db);
+    query.prepare("drop table objtable;");
+    if(!query.exec())
+    {
+        qDebug() << "delete table err " << query.lastError();
+    }
 }

@@ -14,6 +14,7 @@ public:
     virtual ~database();
 
     void setRecord(const int id, const QString &text);
+    void delRecord(const int id);
 
 
     void createTable();
