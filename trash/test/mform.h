@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "peventtest.h"
+#include "database.h"
 
 namespace Ui {
 class Mform;
@@ -21,6 +22,7 @@ protected:
 private:
     Ui::Mform *ui;
     PeventTest *pe;
+    database *db;
 
 public slots:
     void toRepaint();

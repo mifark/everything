@@ -1,6 +1,7 @@
 #ifndef PEVENTTEST_H
 #define PEVENTTEST_H
 
+#include "types.h"
 #include <QWidget>
 #include <QList>
 
@@ -15,6 +16,9 @@ public:
     explicit PeventTest(QWidget *parent = 0);
     QPair<int,int>getSizeParams();
 
+    void setDBPointer(database *db);
+    void setMap();
+
 protected:
     void paintEvent(QPaintEvent *);
     void keyPressEvent(QKeyEvent *);
@@ -22,12 +26,9 @@ protected:
 
 private:
 
-//    QChar map[WIDTH][HEIGHT];
-//    QChar dmap[WIDTH][HEIGHT];
     QList<QList<QChar> > lmap;
     QList<QList<QChar> > dlmap;
 
-    void setMap();
     void updateMap();
     QFont font;
     int fontH;
@@ -40,6 +41,8 @@ private:
     QList<double> dy;
     QList<double> dx;
 
+
+    QMap<int,QChar> types;
 signals:
     void toRepaint();
     

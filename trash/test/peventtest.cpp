@@ -4,19 +4,20 @@
 #include <QTime>
 #include <QKeyEvent>
 #include <QDebug>
+#include "database.h"
 
 PeventTest::PeventTest(QWidget *parent) :
     QWidget(parent)
 {
     QFontMetrics metrics(font);
     fontH = metrics.height()+2;
-    fontW = metrics.width('w')+4;
+    fontW = metrics.width(Types::compare)+4;
     dx << -1 << 0 << 1;
     dy << -1 << 0 << 1;
     player.setX(5);
     player.setY(5);
 
-    setMap();
+//    setMap();
 }
 
 void PeventTest::paintEvent(QPaintEvent *)
@@ -49,9 +50,9 @@ void PeventTest::setMap()
         for(int y=0;y<HEIGHT;++y)
         {
             if (x == 0 || x == WIDTH - 1 || y == 0 || y == HEIGHT - 1 || qrand() % 40 == 0)
-                lmap[x].append('#');
+                lmap[x].append(types[Types::WALL]);
             else
-                lmap[x].append('.');
+                lmap[x].append(types[Types::FLOOR]);
         }
     }
     updateMap();
@@ -60,7 +61,7 @@ void PeventTest::setMap()
 void PeventTest::updateMap()
 {
     dlmap = lmap;
-   dlmap[player.x()][player.y()] = '@';
+   dlmap[player.x()][player.y()] = types[Types::PLAYER];
 }
 
 QPair<int,int> PeventTest::getSizeParams()
@@ -98,7 +99,7 @@ void PeventTest::setPlayerD(int x, int y)
 {
     int lx = player.x()+x;
     int ly = player.y()+y;
-    if(lmap[lx][ly]!='#')
+    if(lmap[lx][ly]!=types[Types::WALL])
     {
         player.setX(lx);
         player.setY(ly);
@@ -107,4 +108,10 @@ void PeventTest::setPlayerD(int x, int y)
 //    emit toRepaint();
     updateMap();
     this->repaint();
+}
+
+void PeventTest::setDBPointer(database *db)
+{
+//    Types::createBasic(db);
+    types = Types::getRecords(db);
 }

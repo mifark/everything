@@ -3,16 +3,17 @@ QT += sql
 HEADERS += \
     mform.h \
     peventtest.h \
-    gameobject.h \
+    database.h \
     types.h \
-    database.h
+    gameobject.h
 
 SOURCES += \
     main.cpp \
     mform.cpp \
     peventtest.cpp \
-    gameobject.cpp \
-    database.cpp
+    database.cpp \
+    types.cpp \
+    gameobject.cpp
 
 FORMS += \
     mform.ui

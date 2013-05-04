@@ -2,14 +2,15 @@
 #include "ui_mform.h"
 #include <QKeyEvent>
 #include <QDebug>
-#include "database.h"
 
 Mform::Mform(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Mform)
 {
-    database db;
+    db = new database();
     pe = new PeventTest();
+    pe->setDBPointer(db);
+    pe->setMap();
     ui->setupUi(this);
     ui->widlayout->addWidget(pe);
     QPair<int,int> prm = pe->getSizeParams();
@@ -28,6 +29,7 @@ Mform::~Mform()
 {
     delete pe;
     delete ui;
+    delete db;
 }
 
 void Mform::keyPressEvent(QKeyEvent *ev)

@@ -15,11 +15,14 @@ public:
 
     void setRecord(const int id, const QString &text);
     void delRecord(const int id);
+    QString getRecord(const int id);
 
 
     void createTable();
 
     void deleteTable();
+
+    bool isOpen();
 
 private:
 
