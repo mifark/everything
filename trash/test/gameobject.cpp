@@ -3,25 +3,38 @@
 GameObject::GameObject(QObject *parent) :
     QObject(parent)
 {
+    Dbs = new database();
 
 }
 
-
-Types::talk GameObject::collide(Types::talk type)
+GameObject::~GameObject()
 {
-    switch(type.type)
-    {
-        case Types::SIMPLE:
-            return Types::talk();
-        case Types::BOOLEAN:
-            {
-                Types::talk ret;
-                ret.type = type.type;
-                bool b = true;
-                ret.return_this = (void) b;
-                return ret;
-            }
-    }
-
-    return Types::talk();
+    delete Dbs;
 }
+
+
+//talk GameObject::collide(talk type)
+//{
+//    switch(type.type)
+//    {
+//        case SIMPLE:
+//            return talk();
+//        case BOOLEAN:
+//            {
+//                talk ret;
+//                ret.type = type.type;
+//                bool b = true;
+//                ret.return_this = (void *) &b;
+//                return ret;
+//            }
+//    }
+
+//    return talk();
+//}
+
+void GameObject::seteType(eTypes type)
+{
+    this->type = type;
+}
+
+

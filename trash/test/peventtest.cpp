@@ -11,7 +11,7 @@ PeventTest::PeventTest(QWidget *parent) :
 {
     QFontMetrics metrics(font);
     fontH = metrics.height()+2;
-    fontW = metrics.width(Types::compare)+4;
+    fontW = metrics.width(compare)+4;
     dx << -1 << 0 << 1;
     dy << -1 << 0 << 1;
     player.setX(5);
@@ -50,9 +50,9 @@ void PeventTest::setMap()
         for(int y=0;y<HEIGHT;++y)
         {
             if (x == 0 || x == WIDTH - 1 || y == 0 || y == HEIGHT - 1 || qrand() % 40 == 0)
-                lmap[x].append(types[Types::WALL]);
+                lmap[x].append(types[WALL]);
             else
-                lmap[x].append(types[Types::FLOOR]);
+                lmap[x].append(types[FLOOR]);
         }
     }
     updateMap();
@@ -61,7 +61,7 @@ void PeventTest::setMap()
 void PeventTest::updateMap()
 {
     dlmap = lmap;
-   dlmap[player.x()][player.y()] = types[Types::PLAYER];
+   dlmap[player.x()][player.y()] = types[PLAYER];
 }
 
 QPair<int,int> PeventTest::getSizeParams()
@@ -99,7 +99,7 @@ void PeventTest::setPlayerD(int x, int y)
 {
     int lx = player.x()+x;
     int ly = player.y()+y;
-    if(lmap[lx][ly]!=types[Types::WALL])
+    if(lmap[lx][ly]!=types[WALL])
     {
         player.setX(lx);
         player.setY(ly);
@@ -112,6 +112,6 @@ void PeventTest::setPlayerD(int x, int y)
 
 void PeventTest::setDBPointer(database *db)
 {
-//    Types::createBasic(db);
-    types = Types::getRecords(db);
+//    createBasic(db);
+    types = getRecords(db);
 }

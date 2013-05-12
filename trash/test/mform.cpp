@@ -8,6 +8,7 @@ Mform::Mform(QWidget *parent) :
     ui(new Ui::Mform)
 {
     db = new database();
+    dbcr = new DatabaseCr();
     pe = new PeventTest();
     pe->setDBPointer(db);
     pe->setMap();
@@ -17,6 +18,7 @@ Mform::Mform(QWidget *parent) :
     this->pe->setMinimumSize(prm.first,prm.second);
     this->installEventFilter(pe);
     connect(pe,SIGNAL(toRepaint()),this,SLOT(toRepaint()));
+    connect(dbcr,SIGNAL(sig_remake()),this,SLOT(on_remake()));
 }
 
 void Mform::toRepaint()
@@ -30,9 +32,21 @@ Mform::~Mform()
     delete pe;
     delete ui;
     delete db;
+    delete dbcr;
 }
 
 void Mform::keyPressEvent(QKeyEvent *ev)
 {
 
+}
+
+void Mform::on_pushButton_clicked()
+{
+    dbcr->show();
+
+}
+
+void Mform::on_remake()
+{
+    createBasic(db);
 }

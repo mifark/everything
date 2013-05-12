@@ -5,7 +5,9 @@ HEADERS += \
     peventtest.h \
     database.h \
     types.h \
-    gameobject.h
+    gameobject.h \
+    databasecr.h \
+    objectinteract.h
 
 SOURCES += \
     main.cpp \
@@ -13,7 +15,10 @@ SOURCES += \
     peventtest.cpp \
     database.cpp \
     types.cpp \
-    gameobject.cpp
+    gameobject.cpp \
+    databasecr.cpp \
+    objectinteract.cpp
 
 FORMS += \
-    mform.ui
+    mform.ui \
+    databasecr.ui

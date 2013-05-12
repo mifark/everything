@@ -14,15 +14,23 @@ public:
     virtual ~database();
 
     void setRecord(const int id, const QString &text);
+    void setReationsRecord(const int idtype,const int idreact);
     void delRecord(const int id);
     QString getRecord(const int id);
 
+    int getReactionsRecord(bool is_type);
+
 
     void createTable();
+    void createReactionsTable();
 
     void deleteTable();
+    void deleteReactionsTable();
 
     bool isOpen();
+
+    void redoTable();
+    void redoReactionsTable();
 
 private:
 
@@ -31,8 +39,7 @@ private:
     
 signals:
     
-public slots:
-    
+
 };
 
 #endif // DATABASE_H

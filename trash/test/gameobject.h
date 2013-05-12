@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include "types.h"
+#include "database.h"
 
 class GameObject : public QObject
 {
@@ -11,12 +12,18 @@ public:
     explicit GameObject(QObject *parent = 0);
     ~GameObject();
 
-    Types::talk collide(Types::talk type);
+//    talk collide(talk type);
+    void seteType(eTypes type);
 
 
 private:
 
-    Types::eTypes type;
+    eTypes type;
+    database *Dbs;
+
+    bool block();
+    bool freeToGo();
+    bool onOpen(Qt::Key k);
     
 signals:
     
